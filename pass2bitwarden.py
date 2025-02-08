@@ -6,6 +6,8 @@
 # ]
 # ///
 
+__doc__ = """Export passwords from the Standard UNIX Password Manager to Bitwarden."""
+
 
 import csv
 import logging
@@ -158,15 +160,14 @@ def write_website_password(
 
 def main():
     # argument parsing ------------------------------------------------------------------------
-    parser = ArgumentParser(
-        "Export passwords from the Standard UNIX Password Manager to Bitwarden"
-    )
+    parser = ArgumentParser(description=__doc__)
     parser.add_argument(
         "--folder",
         dest="folder",
         help=(
             "Name of the Bitwarden folder to put the passwords in. "
-            "Use / to specify a series of nested folders."
+            "Use / to specify a series of nested folders "
+            "(they must pre-exist in Bitwarden otherwise they'll be ignored)."
         ),
         required=False,
         default="",
@@ -174,9 +175,9 @@ def main():
     )
     parser.add_argument(
         "-d",
-        "--input-dir",
+        "--input-dirs",
         dest="input_dirs",
-        help="Path to the top-level directory to look for GPG-encrypted passwords",
+        help="Path to the top-level directories to look for GPG-encrypted passwords",
         required=False,
         type=valid_dir,
         default=(Path.home() / ".password-store").expanduser().resolve(),
